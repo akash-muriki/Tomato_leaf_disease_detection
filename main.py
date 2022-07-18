@@ -29,7 +29,7 @@ flowers_labels_dict = {
     'healthy': 2,
     'light_blight': 3,
     'mold': 4,
-
+                            #took only 5 cat codes
 }
 
 X, y = [], []
@@ -48,7 +48,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0, shuffl
 X_train_scaled = X_train / 255
 X_test_scaled = X_test / 255
 
-feature_extractor_model = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
+feature_extractor_model = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"  #pre trained model
 
 pretrained_model_without_top_layer = hub.KerasLayer(
     feature_extractor_model, trainable=False)
@@ -66,6 +66,6 @@ model.fit(X_train_scaled, y_train, epochs=3)
 
 print(model.evaluate(X_test_scaled, y_test))
 
-pred = model.predict(X_test_scaled)
+pred =[np.argmax(i) for i in model.predict(X_test_scaled)]
 
 print(classification_report(pred, y_test))
